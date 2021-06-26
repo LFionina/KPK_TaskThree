@@ -62,10 +62,7 @@ int main ()
     {
     txCreateWindow (1300, 800);
 
-
-
     MovePerson ();
-
 
     return 0;
     }
@@ -74,7 +71,7 @@ int main ()
 //-----------------------------------------------------------------------------
 void MovePerson ()
     {
-    HDC  background = txLoadImage ("map.bmp");
+    HDC  background = txLoadImage ("bgfon.bmp");
     HDC  mapBG      = txLoadImage ("map.bmp");
     //HDC  manya = txLoadImage ("personFront1.bmp");
 
@@ -84,25 +81,21 @@ void MovePerson ()
     while (! txGetAsyncKeyState (VK_ESCAPE))
         {
         txBitBlt (0, 100, background);
+
+        if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 100, mapBG);
+
         ghost.Draw ();
-
         ghostOld = ghost;
-
         ghost.Control ();
 
-        //printf("old: x= %.1f y= %.1f real: x= %.1f y= %.1f\n",ghostOld.x, ghostOld.y, ghost.x, ghost.y);
-
         COLORREF colorControl = txGetPixel(ghost.x, ghost.y, mapBG);
-
         if ( colorControl != RGB (0, 0, 0) )
-        {
+            {
+            printf("%06X - color \n",colorControl);
+            ghost = ghostOld;
+            }
 
-        ghost = ghostOld;
-        }
-
-
-
-        txSleep(20);
+        txSleep(200);
         }
 
     txDeleteDC (background);
