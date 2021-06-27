@@ -1,4 +1,3 @@
-![food](https://user-images.githubusercontent.com/80356955/123540280-37979000-d74f-11eb-8999-8fd1feb374d4.png)
 # KPK_TaskThree
 Курсы повышения квалификации  по проектному программированию на языке С++
 
