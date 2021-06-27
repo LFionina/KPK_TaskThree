@@ -21,6 +21,14 @@ struct Person
     void Control ();
     };
 
+struct Button
+    {
+    double x, y;
+    char text[15];
+
+    void Draw ();
+    };
+
 //-------------------   ‘ ” Õ   ÷ » »      À ¿ — — Œ ¬    ---------------------
 
 /*
@@ -53,20 +61,58 @@ void Person::Control ()
     if (txGetAsyncKeyState (VK_DOWN )  ) (*this).y += 5;
     }
 
+//- - - - - - - - - - - - ËÒÓ‚‡ÌËÂ ÍÌÓÔÍË  - - - - - - - - - - - - - - - - - -
+void Button::Draw ()
+    {
+    txSetColor (RGB(23, 112, 17));
+    txSetFillColor (RGB(23, 40, 11));
+    txRectangle(x, y, x + 150, y + 40);
+
+    txSetColor (RGB(23, 112, 17));
+    txSetFillColor (RGB(170, 222, 135));
+    txRectangle(x - 3, y - 3, x + 147, y + 37);
+
+    txSetColor(RGB(23, 112, 17));
+    txSelectFont ("Arial Black", 25);
+    txDrawText (x, y+3, x + 150, y + 40, text, DT_CENTER);
+    }
 
 //--------------------  œ–Œ“Œ“»œ€ ‘”Õ ÷»…  ---------------------------------------
 void MovePerson ();
+void Menu ();
+
 
 //======================== Œ—ÕŒ¬Õ¿ﬂ ‘”Õ ÷»ﬂ  ====================================
 int main ()
     {
     txCreateWindow (1300, 800);
 
-    MovePerson ();
-
+    //MovePerson ();
+    Menu();
     return 0;
     }
 
+
+//-----------------------------------------------------------------------------
+void Menu ()
+    {
+    txSetColor (RGB(23, 112, 17));
+    txSetFillColor (RGB(23, 112, 17));
+    txRectangle(0, 0, 1300, 100);
+
+    Button buttonF1 = { 20, 50, "F1 - „ÂÓÈ"};
+    Button buttonF2 = {190, 50, "F2 - ÛÓ‚ÂÌ¸"};
+
+    buttonF1.Draw();
+    buttonF2.Draw();
+
+    }
+
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
 void MovePerson ()
@@ -75,14 +121,14 @@ void MovePerson ()
     HDC  mapBG      = txLoadImage ("map.bmp");
     //HDC  manya = txLoadImage ("personFront1.bmp");
 
-    Person ghost = {1090, 230};
+    Person ghost = {1090, 130};
     Person ghostOld = ghost;
 
     while (! txGetAsyncKeyState (VK_ESCAPE))
         {
-        txBitBlt (0, 100, background);
+        txBitBlt (0, 0, background);
 
-        if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 100, mapBG);
+        if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 0, mapBG);
 
         ghost.Draw ();
         ghostOld = ghost;
@@ -91,7 +137,7 @@ void MovePerson ()
         COLORREF colorControl = txGetPixel(ghost.x, ghost.y, mapBG);
         if ( colorControl != RGB (0, 0, 0) )
             {
-            printf("%06X - color \n",colorControl);
+            //printf("%06X - color \n",colorControl);
             ghost = ghostOld;
             }
 
