@@ -1,3 +1,4 @@
+![food](https://user-images.githubusercontent.com/80356955/123540280-37979000-d74f-11eb-8999-8fd1feb374d4.png)
 # KPK_TaskThree
 Курсы повышения квалификации  по проектному программированию на языке С++
 
@@ -13,7 +14,13 @@
 Поле, карта и элементы игры созданы в векторном редакторе Inkscape и переконвертированы в bmp формат при помощи стандартного приложения Paint. 
 | Элемент | Орисание|
 | ------- | ------- |
-|| Подарки разного цвета - предусматривают выбор задания или платы за проход на перекрестке|
+|| Подарки разного цвета - предусматривают выбор задания или платы за проход на перекрестке| ![food](https://user-images.githubusercontent.com/80356955/123540324-70d00000-d74f-11eb-968a-de22f80254f4.png)
+![like](https://user-images.githubusercontent.com/80356955/123540328-7af1fe80-d74f-11eb-976b-a203d393598d.png)
+![personFront](https://user-images.githubusercontent.com/80356955/123540332-7fb6b280-d74f-11eb-9626-4e58d5c71e62.png)
+![presentBlue](https://user-images.githubusercontent.com/80356955/123540335-83e2d000-d74f-11eb-91cf-04953eae593d.png)
+![school](https://user-images.githubusercontent.com/80356955/123540340-8c3b0b00-d74f-11eb-9a7a-1002a21c98e4.png)
+![stadium](https://user-images.githubusercontent.com/80356955/123540344-8e9d6500-d74f-11eb-8354-791e9c0ba4f5.png)
+
 || Озеро - задание ...|
 || Стадион - задание ...|
 || Школа - задание...|
