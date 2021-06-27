@@ -29,6 +29,16 @@ struct Button
     void Draw ();
     };
 
+struct SubMenu
+    {
+    double x, y;
+    char etemMenu1[14];
+    char etemMenu2[14];
+    char etemMenu3[14];
+
+    void Draw ();
+    };
+
 //-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
 
 /*
@@ -77,9 +87,33 @@ void Button::Draw ()
     txDrawText (x, y+3, x + 150, y + 40, text, DT_CENTER);
     }
 
+//- - - - - - - - - - - - рисование подменю  - - - - - - - - - - - - - - - - - -
+void SubMenu::Draw ()
+    {
+    txSetColor (RGB(23, 112, 17));
+    txSetFillColor (RGB(23, 112, 17));
+    txRectangle(x, y, x + 170, y + 200);
+
+    txSetColor(RGB(170, 222, 135));
+    txSelectFont ("Arial Black", 25);
+    txDrawText (x + 10, y + 10, x + 160, y +  40, etemMenu1, DT_LEFT);
+    txDrawText (x + 10, y + 50, x + 160, y +  80, etemMenu2, DT_LEFT);
+    txDrawText (x + 10, y + 90, x + 160, y + 120, etemMenu3, DT_LEFT);
+
+    }
+
+
+
+
 //--------------------  ПРОТОТИПЫ ФУНКЦИЙ  ---------------------------------------
 void MovePerson ();
+
 void Menu ();
+void MenuDraw ();
+
+void SubMenuDraw (double x, double y, char etemMenu1[14], char etemMenu2[14], char etemMenu3[14]);
+int  SubMenuSelect (SubMenu view);
+void SelectDraw (SubMenu view, int pos);
 
 
 //======================== ОСНОВНАЯ ФУНКЦИЯ  ====================================
@@ -96,24 +130,147 @@ int main ()
 //-----------------------------------------------------------------------------
 void Menu ()
     {
+    MenuDraw ();
+
+    while (true)
+        {
+        if (txGetAsyncKeyState (VK_F1) )
+            {
+            MenuDraw();
+            SubMenu subMenuF1 = {10, 100, "круг","квадрат","картинка"};
+            subMenuF1.Draw();
+
+            int d1 = SubMenuSelect (subMenuF1);
+            printf("выбор f1: %d", d1);
+            //break;
+            }
+        if (txGetAsyncKeyState (VK_F2) )
+            {
+            MenuDraw();
+            SubMenu subMenuF2 = {200, 100, "уровень 1","уровень 2","уровень 3"};
+            subMenuF2.Draw();
+
+            int d2 = SubMenuSelect (subMenuF2);
+            printf("выбор f2: %d", d2);
+            //break;
+            }
+
+        }
+    }
+
+//-----------------------------------------------------------------------------
+void MenuDraw ()
+    {
+    txSetFillColor (TX_BLACK);
+    txClear();
+
     txSetColor (RGB(23, 112, 17));
     txSetFillColor (RGB(23, 112, 17));
     txRectangle(0, 0, 1300, 100);
 
     Button buttonF1 = { 20, 50, "F1 - герой"};
-    Button buttonF2 = {190, 50, "F2 - уровень"};
+    Button buttonF2 = {210, 50, "F2 - уровень"};
 
     buttonF1.Draw();
     buttonF2.Draw();
-
     }
 
 //-----------------------------------------------------------------------------
+void SubMenuDraw (double x, double y, char etemMenu1[14], char etemMenu2[14], char etemMenu3[14])
+    {
+    txSetColor (RGB(23, 112, 17));
+    txSetFillColor (RGB(23, 112, 17));
+    txRectangle(x, y, x + 170, y + 200);
 
+    txSetColor(RGB(170, 222, 135));
+    txSelectFont ("Arial Black", 25);
+    txDrawText (x + 10, y + 10, x + 160, y +  40, etemMenu1, DT_LEFT);
+    txDrawText (x + 10, y + 50, x + 160, y +  80, etemMenu2, DT_LEFT);
+    txDrawText (x + 10, y + 90, x + 160, y + 120, etemMenu3, DT_LEFT);
+
+    }
 //-----------------------------------------------------------------------------
+int SubMenuSelect (SubMenu view)
+    {
+    int pos = 1;
+    txSetColor(TX_YELLOW);
+    txSelectFont ("Arial Black", 25);
+    txDrawText (view.x + 10, view.y + 10, view.x + 160, view.y +  40, view.etemMenu1, DT_LEFT);
 
+    txSetColor(RGB(170, 222, 135));
+    txDrawText (view.x + 10, view.y + 50, view.x + 160, view.y +  80, view.etemMenu2, DT_LEFT);
+    txDrawText (view.x + 10, view.y + 90, view.x + 160, view.y + 120, view.etemMenu3, DT_LEFT);
+
+    while (true)
+        {
+        if (GetAsyncKeyState(VK_UP) != 0)
+            {
+            pos -= 1;
+            if (pos == 0) pos = 3;
+            SelectDraw (view, pos);
+            txSleep(25);
+            }
+        else if (GetAsyncKeyState(VK_DOWN) != 0)
+            {
+            pos += 1;
+            if (pos == 4) pos = 1 ;
+            SelectDraw (view, pos);
+            txSleep(25);
+            }
+        else if (GetAsyncKeyState(VK_RETURN) != 0)
+            {
+            MenuDraw ();
+            return pos;
+
+            }
+        }
+    }
 //-----------------------------------------------------------------------------
+void SelectDraw (SubMenu view, int pos)
+    {
+    switch (pos)
+        {
+        case 1:
+            {
+            MenuDraw ();
+            view.Draw();
+            txSetColor(TX_YELLOW);
+            txSelectFont ("Arial Black", 25);
+            txDrawText (view.x + 10, view.y + 10, view.x + 160, view.y +  40, view.etemMenu1, DT_LEFT);
 
+            txSetColor(RGB(170, 222, 135));
+            txDrawText (view.x + 10, view.y + 50, view.x + 160, view.y +  80, view.etemMenu2, DT_LEFT);
+            txDrawText (view.x + 10, view.y + 90, view.x + 160, view.y + 120, view.etemMenu3, DT_LEFT);
+            }
+            break;
+        case 2:
+            {
+            MenuDraw ();
+            view.Draw();
+            txSetColor(TX_YELLOW);
+            txSelectFont ("Arial Black", 25);
+            txDrawText (view.x + 10, view.y + 50, view.x + 160, view.y +  80, view.etemMenu2, DT_LEFT);
+
+            txSetColor(RGB(170, 222, 135));
+            txDrawText (view.x + 10, view.y + 10, view.x + 160, view.y +  40, view.etemMenu1, DT_LEFT);
+            txDrawText (view.x + 10, view.y + 90, view.x + 160, view.y + 120, view.etemMenu3, DT_LEFT);
+            }
+            break;
+        case 3:
+            {
+            MenuDraw ();
+            view.Draw();
+            txSetColor(TX_YELLOW);
+            txSelectFont ("Arial Black", 25);
+            txDrawText (view.x + 10, view.y + 90, view.x + 160, view.y + 120, view.etemMenu3, DT_LEFT);
+
+            txSetColor(RGB(170, 222, 135));
+            txDrawText (view.x + 10, view.y + 50, view.x + 160, view.y +  80, view.etemMenu2, DT_LEFT);
+            txDrawText (view.x + 10, view.y + 10, view.x + 160, view.y +  40, view.etemMenu1, DT_LEFT);
+            }
+            break;
+        }
+    }
 //-----------------------------------------------------------------------------
 void MovePerson ()
     {
