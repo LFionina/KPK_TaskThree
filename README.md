@@ -25,3 +25,11 @@
 || Стадион - задание ...|
 || Школа - задание...|
 || Фудкорт - задание|
+
+
+![school](https://user-images.githubusercontent.com/80356955/123540417-f18efc00-d74f-11eb-8f31-f309cdda61b9.png)
+![stadium](https://user-images.githubusercontent.com/80356955/123540418-f2279280-d74f-11eb-9018-9d37c2cade70.png)
+![food](https://user-images.githubusercontent.com/80356955/123540419-f2c02900-d74f-11eb-8195-0f772648c667.png)
+![like](https://user-images.githubusercontent.com/80356955/123540420-f2c02900-d74f-11eb-872f-728e20692fb2.png)
+![personFront](https://user-images.githubusercontent.com/80356955/123540421-f2c02900-d74f-11eb-8792-59a4f5f55198.png)
+![presentBlue](https://user-images.githubusercontent.com/80356955/123540422-f358bf80-d74f-11eb-9147-7b05b3e7c181.png)
