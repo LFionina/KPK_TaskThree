@@ -17,6 +17,9 @@ struct Person
     {
     double x, y;
 
+    int numView;
+
+    void SetView (int view);
     void Draw ();
     void Control ();
     };
@@ -41,25 +44,43 @@ struct SubMenu
 
 //-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
 
-/*
-//- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
-void Person::Draw ()
+//- - - - - - - - - - - - номер героя  - - - - - - - - - - - - - - - - - -
+void Person::SetView (int view)
     {
-    HDC ghost = txLoadImage ("personFront1.bmp");
-    txTransparentBlt  ( txDC(), x + 42, y + 50, 0, 0, ghost, 0, 0, RGB(0,255,0));
-    txDeleteDC (ghost);
-
+    this -> numView = view;
     }
- */
-
 //- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
 void Person::Draw ()
     {
-    txSetColor     (RGB (84, 0, 0));
-    txSetFillColor (RGB (255, 213, 213));
-    txCircle (x, y, 30);
-    txSetFillColor (RGB (84, 0, 0));
-    txCircle (x, y, 4);
+    switch (numView)
+        {
+        case 1:
+            {
+            txSetColor     (RGB (84, 0, 0));
+            txSetFillColor (RGB (255, 213, 213));
+            txCircle (x, y, 30);
+            txSetFillColor (RGB (84, 0, 0));
+            txCircle (x, y,  4);
+            }
+            break;
+        case 2:
+            {
+            txSetColor     (RGB (84, 0, 0));
+            txSetFillColor (RGB (255, 213, 213));
+            txRectangle (x - 30, y - 30, x + 30, y + 30);
+            txSetFillColor (RGB (84, 0, 0));
+            txRectangle (x -  4, y -  4, x +  4, y +  4);
+            }
+            break;
+        case 3:
+            {
+            HDC ghost = txLoadImage ("personFront1.bmp");
+            txTransparentBlt  ( txDC(), x + 42, y + 50, 0, 0, ghost, 0, 0, RGB(0,255,0));
+            txDeleteDC (ghost);
+            }
+            break;
+        }
+
     }
 
 //- - - - - - - - - - - - управление тележкой - - - - - - - - - - - - - - - - -
@@ -121,8 +142,10 @@ int main ()
     {
     txCreateWindow (1300, 800);
 
-    //MovePerson ();
-    Menu();
+
+    //Menu();
+
+    MovePerson ();
     return 0;
     }
 
@@ -278,14 +301,14 @@ void MovePerson ()
     HDC  mapBG      = txLoadImage ("map.bmp");
     //HDC  manya = txLoadImage ("personFront1.bmp");
 
-    Person ghost = {1090, 130};
+    Person ghost = {1090, 231, 2};
     Person ghostOld = ghost;
 
     while (! txGetAsyncKeyState (VK_ESCAPE))
         {
-        txBitBlt (0, 0, background);
+        txBitBlt (0, 101, background);
 
-        if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 0, mapBG);
+        if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 101, mapBG);
 
         ghost.Draw ();
         ghostOld = ghost;
