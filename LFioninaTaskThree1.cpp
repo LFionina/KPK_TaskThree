@@ -15,13 +15,16 @@ const HDC SPRITE_PERSON  = txLoadImage ("Images\\person.bmp");
 const int X_PERSON = txGetExtentX (SPRITE_PERSON)/4,
           Y_PERSON = txGetExtentY (SPRITE_PERSON)/4;
 
+const HDC SPRITE_PRESENT  = txLoadImage ("Images\\presents1.bmp");
+const int X_PRESENT = txGetExtentX (SPRITE_PRESENT)/5,
+          Y_PRESENT = txGetExtentY (SPRITE_PRESENT);
+
 //---------------------СТРУКТУРЫ-------------------------------------------------
 
 struct Person
     {
     double x, y;
 
-    int numView;
     int course;
 
     int live;
@@ -31,11 +34,17 @@ struct Person
     void Control ();
     };
 
+struct Present
+    {
+    double x, y;
+
+    void Draw (int num);
+    };
+
 //-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
 
 
 //- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
-
 void Person::Draw (int view)
     {
     if (course == 1)  //--- вправо
@@ -81,11 +90,15 @@ void Person::Control ()
         }
     }
 
-
+//- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
+void Present::Draw (int num)
+    {
+    txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+    }
 
 //--------------------  ПРОТОТИПЫ ФУНКЦИЙ  ---------------------------------------
-void GameOver (Person hero);
-void LiveDraw (Person* hero);
+void GameOver  (Person  hero);
+void LiveDraw  (Person* hero);
 void MoneyDraw (Person* hero);
 
 //======================== ОСНОВНАЯ ФУНКЦИЯ  ====================================
@@ -93,12 +106,14 @@ int main ()
     {
     txCreateWindow (1300, 800);
 
+    Present pres1 = {1030, 450};
+
     //У персонажа 2 характеристики: жизни и монеты
     // ____     на старте 100% здоровья и 100 монет
-    Person hero = {1090, 231, 1, 1, 100, 100};
+    Person hero = {1050, 215, 1, 100, 100};
     Person heroOld = hero;
 
-    HDC background = txLoadImage ("Images\\map1.bmp");
+    HDC background = txLoadImage ("Images\\bgfon2.bmp");
     HDC mapBG      = txLoadImage ("Images\\map1.bmp");
 
     txSetColor (RGB(170, 222, 135), 1);
@@ -106,7 +121,9 @@ int main ()
 
     int view  = 0;
     int widthHero  = X_PERSON / 2;
-    int heightHero = Y_PERSON - 10;
+    int heightHero = Y_PERSON / 2;
+
+    printf("x pres = %04d   y pres %04d", X_PRESENT,Y_PRESENT);
 
     // ________ пока не конец игры (не нажата кнопка ESC) _______
     while (! txGetAsyncKeyState (VK_ESCAPE) and hero.live > 0 and hero.money > 0)
@@ -116,24 +133,41 @@ int main ()
         txBitBlt (0, 0, background);
 
         view ++;
-
         hero.Draw(view);
+
         heroOld = hero;
         hero.Control();
         LiveDraw  (&hero);
         MoneyDraw (&hero);
 
+        pres1.Draw (1);
+
         //____ персонаж бродит по полю - границы отнимают здоровье
         if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 0, mapBG);
 
-        // LT - левая верхняя, RT - правая верхняя, LB - левая нижняя, RB - правая нижняя
-        COLORREF colorControlLT = txGetPixel(hero.x + 5,             hero.y + 5, mapBG);
-        COLORREF colorControlRT = txGetPixel(hero.x + 5 + widthHero, hero.y + 5, mapBG);
-        COLORREF colorControlLB = txGetPixel(hero.x + 5,             hero.y + 5 + heightHero, mapBG);
-        COLORREF colorControlRB = txGetPixel(hero.x + 5 + widthHero, hero.y + 5 + heightHero, mapBG);
+        //  границы L - левая, R -  правая, T - верхняя, B - нижняя
+        COLORREF colorControlL = txGetPixel(hero.x + widthHero - 15, hero.y + heightHero, mapBG);
+        COLORREF colorControlR = txGetPixel(hero.x + widthHero + 15, hero.y + heightHero, mapBG);
 
-        if ( colorControlLT != RGB (0, 0, 0) and colorControlLB != RGB (0, 0, 0) and
-             colorControlRT != RGB (0, 0, 0) and colorControlRB != RGB (0, 0, 0))
+        COLORREF colorControlT = txGetPixel(hero.x + widthHero, hero.y + heightHero - 5, mapBG);
+        COLORREF colorControlB = txGetPixel(hero.x + widthHero, hero.y + heightHero + 22, mapBG);
+
+        if ( colorControlL != RGB (0, 0, 0) )
+            {
+            hero = heroOld;
+            hero.live -= 1;
+            }
+        if ( colorControlR != RGB (0, 0, 0) )
+            {
+            hero = heroOld;
+            hero.live -= 1;
+            }
+        if ( colorControlT != RGB (0, 0, 0) )
+            {
+            hero = heroOld;
+            hero.live -= 1;
+            }
+        if ( colorControlB != RGB (0, 0, 0) )
             {
             hero = heroOld;
             hero.live -= 1;
