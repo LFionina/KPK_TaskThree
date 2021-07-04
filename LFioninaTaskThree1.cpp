@@ -16,11 +16,14 @@ const int X_PERSON = txGetExtentX (SPRITE_PERSON)/4,
           Y_PERSON = txGetExtentY (SPRITE_PERSON)/4;
 
 const HDC SPRITE_PRESENT  = txLoadImage ("Images\\presents1.bmp");
-const int X_PRESENT = txGetExtentX (SPRITE_PRESENT)/5,
+const int X_PRESENT = txGetExtentX (SPRITE_PRESENT)/6,
           Y_PRESENT = txGetExtentY (SPRITE_PRESENT);
 
-//---------------------СТРУКТУРЫ-------------------------------------------------
+const HDC SPRITE_REBUS  = txLoadImage ("Images\\rebus.bmp");
+const int X_REBUS = txGetExtentX (SPRITE_PRESENT),
+          Y_REBUS = txGetExtentY (SPRITE_PRESENT)/6;
 
+//---------------------СТРУКТУРЫ-------------------------------------------------
 struct Person
     {
     double x, y;
@@ -36,13 +39,17 @@ struct Person
 
 struct Present
     {
-    double x, y;
+    int x, y;
 
     void Draw (int num);
     };
 
-//-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
+struct Task
+    {
+    void Draw(char taskText[], int num);
+    };
 
+//-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
 
 //- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
 void Person::Draw (int view)
@@ -70,30 +77,41 @@ void Person::Control ()
     {
     if (txGetAsyncKeyState (VK_RIGHT) )
         {
-        (*this).x += 5;
+        (*this).x += 10;
         (*this).course = 1;
         }
     if (txGetAsyncKeyState (VK_LEFT ) )
         {
-        (*this).x -= 5;
+        (*this).x -= 10;
         (*this).course = 2;
         }
     if (txGetAsyncKeyState (VK_UP   ) )
         {
-        (*this).y -= 5;
+        (*this).y -= 10;
         (*this).course = 3;
         }
     if (txGetAsyncKeyState (VK_DOWN ) )
         {
-        (*this).y += 5;
+        (*this).y += 10;
         (*this).course = 0;
         }
     }
 
-//- - - - - - - - - - - - рисование героя  - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - рисование подарка  - - - - - - - - - - - - - - - - - -
 void Present::Draw (int num)
     {
     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+    }
+
+//- - - - - - - - - - - - рисование задания  - - - - - - - - - - - - - - - - - -
+void Task::Draw (char taskText[], int num)
+    {
+    txSetColor (RGB(23, 112, 17), 3);
+    txSetFillColor (RGB(170, 222, 135));
+    txRectangle(350, 250, 950, 550);
+
+    txDrawText (400, 270, 830, 330, taskText,  DT_CENTER);
+    txBitBlt (txDC(), 400, 350, X_REBUS, Y_REBUS, SPRITE_REBUS, 0*X_REBUS, num*Y_REBUS);
     }
 
 //--------------------  ПРОТОТИПЫ ФУНКЦИЙ  ---------------------------------------
@@ -101,15 +119,14 @@ void GameOver  (Person  hero);
 void LiveDraw  (Person* hero);
 void MoneyDraw (Person* hero);
 
+void PresentCheck (Person* hero, int v);
+
 //======================== ОСНОВНАЯ ФУНКЦИЯ  ====================================
 int main ()
     {
     txCreateWindow (1300, 800);
 
-    Present pres1 = {1030, 450};
-
-    //У персонажа 2 характеристики: жизни и монеты
-    // ____     на старте 100% здоровья и 100 монет
+    // ___________ у персонажа 2 характеристики: здоровье и монеты: на старте 100% здоровья и 100 монет
     Person hero = {1050, 215, 1, 100, 100};
     Person heroOld = hero;
 
@@ -123,24 +140,40 @@ int main ()
     int widthHero  = X_PERSON / 2;
     int heightHero = Y_PERSON / 2;
 
-    printf("x pres = %04d   y pres %04d", X_PRESENT,Y_PRESENT);
+    // ___________ массив координат для вывода подарков на экран
+    int coorX [4] = { 96, 415, 580, 1030};
+    int coorY [4] = {266, 555, 400,  450};
+
+    Present pres1 = {coorX[0], coorY[0]};
+    Present pres2 = {coorX[1], coorY[1]};
+    Present pres3 = {coorX[2], coorY[2]};
+    Present pres4 = {coorX[3], coorY[3]};
+
+    int flag1 = 0, flag2 = 0, flag3 = 0, flag4 = 0;
+    int v1 = rand()%5, v2 = rand()%5, v3 = rand()%5, v4 = rand()%5;
 
     // ________ пока не конец игры (не нажата кнопка ESC) _______
     while (! txGetAsyncKeyState (VK_ESCAPE) and hero.live > 0 and hero.money > 0)
         {
         txBegin();
-        //____ рисуем фон и героя
+        //____ рисуем фон
         txBitBlt (0, 0, background);
 
+        //_____рисуем на фоне подарки
+        pres1.Draw (v1);
+        pres2.Draw (v2);
+        pres3.Draw (v3);
+        pres4.Draw (v4);
+
+        //_____рисуем героя с спрайтовой анимацией
         view ++;
         hero.Draw(view);
 
         heroOld = hero;
         hero.Control();
+
         LiveDraw  (&hero);
         MoneyDraw (&hero);
-
-        pres1.Draw (1);
 
         //____ персонаж бродит по полю - границы отнимают здоровье
         if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 0, mapBG);
@@ -152,42 +185,64 @@ int main ()
         COLORREF colorControlT = txGetPixel(hero.x + widthHero, hero.y + heightHero - 5, mapBG);
         COLORREF colorControlB = txGetPixel(hero.x + widthHero, hero.y + heightHero + 22, mapBG);
 
-        if ( colorControlL != RGB (0, 0, 0) )
+        if ( colorControlL != RGB (0, 0, 0) and colorControlL != RGB (255, 255, 255) and colorControlL != RGB (255, 255, 0))
             {
             hero = heroOld;
             hero.live -= 1;
             }
-        if ( colorControlR != RGB (0, 0, 0) )
+        if ( colorControlR != RGB (0, 0, 0) and colorControlR != RGB (255, 255, 255) and colorControlL != RGB (255, 255, 0))
             {
             hero = heroOld;
             hero.live -= 1;
             }
-        if ( colorControlT != RGB (0, 0, 0) )
+        if ( colorControlT != RGB (0, 0, 0) and colorControlT != RGB (255, 255, 255) and colorControlL != RGB (255, 255, 0))
             {
             hero = heroOld;
             hero.live -= 1;
             }
-        if ( colorControlB != RGB (0, 0, 0) )
+        if ( colorControlB != RGB (0, 0, 0) and colorControlB != RGB (255, 255, 255) and colorControlL != RGB (255, 255, 0))
             {
             hero = heroOld;
             hero.live -= 1;
             }
 
-        //____ ___ если натыкается на подарок смотрим какой он по номеру
-        //         1 случайно добавляются/удаляются здоровье или деньги
-        //         2 требует заплатить за вход, если денег не хватает их
-        //           можно заработать в школе, пройдя тест
-        //         3 случайно добавляются/удаляются здоровье или деньги
-        //         4 требует заплатить за вход, если денег не хватает их
-        //           можно заработать в школе, пройдя тест
-
-        //____     на стадионе можно заработать монеты набирая очки в арканоиде
-
-        //____     фудкорт добавляет единицы здоровья
-
-        //____     озеро отнимает 50% здоровья
-
-        //____ финиш - когда у тебя более 80% здоровья и N монет
+        if ( colorControlL == RGB (255, 255, 255) or colorControlR == RGB (255, 255, 255) or
+             colorControlT == RGB (255, 255, 255) or colorControlB == RGB (255, 255, 255) )
+            {
+            if (hero.x > 1033 and hero.x < 1117 and hero.y > 460 and hero.y < 550 and flag4 == 0)
+                {
+                flag4 = 1;
+                PresentCheck (&hero, v4);
+                txSleep(5);
+                v4 = 5;
+                }
+            if (hero.x > 583 and hero.x < 667 and hero.y > 405 and hero.y < 495 and flag3 == 0)
+                {
+                flag3 = 1;
+                PresentCheck (&hero, v3);
+                txSleep(5);
+                v3 = 5;
+                }
+            if (hero.x > 416 and hero.x < 500 and hero.y > 560 and hero.y < 650 and flag2 == 0)
+                {
+                flag2 = 1;
+                PresentCheck (&hero, v2);
+                txSleep(5);
+                v2 = 5;
+                }
+            if (hero.x > 98 and hero.x < 182 and hero.y > 270 and hero.y < 360 and flag1 == 0)
+                {
+                flag1 = 1;
+                PresentCheck (&hero, v1);
+                txSleep(5);
+                v1 = 5;
+                }
+            }
+        if ( colorControlL == RGB (255, 255, 0) or colorControlR == RGB (255, 255, 0) or
+             colorControlT == RGB (255, 255, 0) or colorControlB == RGB (255, 255, 0) )
+            {
+            break;
+            }
 
         txEnd();
         txSleep(150);
@@ -196,11 +251,45 @@ int main ()
     txDeleteDC (background);
     txDeleteDC (mapBG);
     txDeleteDC (SPRITE_PERSON);
+    txDeleteDC (SPRITE_REBUS);
 
     GameOver(hero);
 
     return 0;
     }
+
+
+//-----------------------------------------------------------------------------
+void PresentCheck (Person* hero, int v)
+    {
+    if (v == 0)
+        {
+        (*hero).money += 10;  // желтый
+        txMessageBox ("ВНИМАНИЕ! ПРИЗ!!! \n  10 монет");
+        }
+    if (v == 1)
+        {
+        (*hero).money -= 10;  // синий
+        txMessageBox ("ОЙ! НАЛОГ !!! \n  10 монет");
+        }
+    if (v == 2)
+        {
+        (*hero).live  -= 10;  // красный
+        txMessageBox ("ОЙ! У ВАС ПОТЕРИ :( \n  10% здоровья");
+        }
+    if (v == 3)
+        {
+        (*hero).live  = 100;  // белый
+        txMessageBox ("ВНИМАНИЕ! ПРИЗ!!! \n  Вы полностью здоровы");
+        }
+    if (v == 4)
+        {
+        (*hero).money += 10;  // горох
+        (*hero).live  += 10;
+        txMessageBox ("ВНИМАНИЕ! ПРИЗ!!! \n  10 монет И 10% здоровья");
+        }
+    }
+//-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------
