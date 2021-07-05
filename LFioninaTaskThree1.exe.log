@@ -1,0 +1,265 @@
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe, файл: D:\C_course\TX\TXLib.h, строка: 13628, функция: bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400], Instance: 0x00508304 (32-bit), Flags: CMdRe0, Thread: 0x1FE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x0042306D in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: txBitBlt() at D:/C_course/TX/TXLib.h (13628)
+# 1 0x00423552 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: txBitBlt() at D:/C_course/TX/TXLib.h (13644)
+
+# 2 0x0042D926 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: main() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (158):
+
+    156:         txBegin();
+    157:         //____ рисуем фон
+=>  158:         txBitBlt (0, 0, background);
+    159: 
+    160:         //_____рисуем на фоне подарки
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txBitBlt(HDC, double, double, double, double, HDC, double, double, unsigned int) at D:\C_course\TX\TXLib.h (13628):
+
+  13626:     {
+  13627: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>13628: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  13629: 
+  13630: $   POINT size = txGetExtent (sourceImage);
+
+# 1 in bool {anonymous}::TX::txBitBlt(double, double, HDC, double, double) at D:\C_course\TX\TXLib.h (13644):
+
+  13642: $1  if (_TX_TXWINDOW_FAILED()) return false;
+  13643: 
+=>13644: $   return txBitBlt (txDC(), xDest, yDest, 0, 0, sourceImage, xSource, ySource);
+  13645:     }
+  13646: 
+
+# 2 in int main() at D:\C_course\KPK_TaskThree\LFioninaTaskThree1.cpp (158):
+
+    156:         txBegin();
+    157:         //____ рисуем фон
+=>  158:         txBitBlt (0, 0, background);
+    159: 
+    160:         //_____рисуем на фоне подарки
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	D:\C_course\TX\TXLib.h
+Compiled:	Jul  5 2021 21:22:25, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Jul 05 2021 21:22:28
+
+Run file:	D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe
+Directory:	D:\C_course\KPK_TaskThree
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe, файл: D:\C_course\TX\TXLib.h, строка: 13657, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400], Instance: 0x00508304 (32-bit), Flags: CMdRe0, Thread: 0x1FE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004236ED in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: txTransparentBlt() at D:/C_course/TX/TXLib.h (13657)
+
+# 1 0x0042D0C5 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: Draw() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+# 2 0x0042D936 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: main() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (161):
+
+    159: 
+    160:         //_____рисуем на фоне подарки
+=>  161:         pres1.Draw (v1);
+    162:         pres2.Draw (v2);
+    163:         pres3.Draw (v3);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at D:\C_course\TX\TXLib.h (13657):
+
+  13655: 
+  13656: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>13657: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  13658: 
+  13659:     // Это автоматическое определение размеров картинки (точнее, HDC источника - source) с помощью txGetExtent().
+
+# 1 in void Present::Draw(int) at D:\C_course\KPK_TaskThree\LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	D:\C_course\TX\TXLib.h
+Compiled:	Jul  5 2021 21:22:25, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Jul 05 2021 21:22:28
+
+Run file:	D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe
+Directory:	D:\C_course\KPK_TaskThree
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe, файл: D:\C_course\TX\TXLib.h, строка: 13657, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#3: TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400], Instance: 0x00508304 (32-bit), Flags: CMdRe0, Thread: 0x1FE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004236ED in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: txTransparentBlt() at D:/C_course/TX/TXLib.h (13657)
+
+# 1 0x0042D0C5 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: Draw() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+# 2 0x0042D949 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: main() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (162):
+
+    160:         //_____рисуем на фоне подарки
+    161:         pres1.Draw (v1);
+=>  162:         pres2.Draw (v2);
+    163:         pres3.Draw (v3);
+    164:         pres4.Draw (v4);
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at D:\C_course\TX\TXLib.h (13657):
+
+  13655: 
+  13656: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>13657: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  13658: 
+  13659:     // Это автоматическое определение размеров картинки (точнее, HDC источника - source) с помощью txGetExtent().
+
+# 1 in void Present::Draw(int) at D:\C_course\KPK_TaskThree\LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	D:\C_course\TX\TXLib.h
+Compiled:	Jul  5 2021 21:22:25, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Jul 05 2021 21:22:28
+
+Run file:	D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe
+Directory:	D:\C_course\KPK_TaskThree
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib сообщает:
+
+Программа: D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe, файл: D:\C_course\TX\TXLib.h, строка: 13657, функция: bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF),
+
+Сообщение: Параметр "sourceImage" неверен. Возможно, этот холст не создан, или уже уничтожен, или не загрузилась картинка.
+
+#4: TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400], Instance: 0x00508304 (32-bit), Flags: CMdRe0, Thread: 0x1FE0 (Main), GetLastError(): 13 (Недопустимые данные). 
+
+--------------------------------------------------
+Стек вызовов:
+
+# 0 0x004236ED in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: txTransparentBlt() at D:/C_course/TX/TXLib.h (13657)
+
+# 1 0x0042D0C5 in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: Draw() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+# 2 0x0042D95F in D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe: main() at D:/C_course/KPK_TaskThree/LFioninaTaskThree1.cpp (163):
+
+    161:         pres1.Draw (v1);
+    162:         pres2.Draw (v2);
+=>  163:         pres3.Draw (v3);
+    164:         pres4.Draw (v4);
+    165: 
+
+--------------------------------------------------
+Стек вызовов TX:
+
+# 0 in bool {anonymous}::TX::txTransparentBlt(HDC, double, double, double, double, HDC, double, double, COLORREF) at D:\C_course\TX\TXLib.h (13657):
+
+  13655: 
+  13656: $1  if (_TX_HDC_FAILED (destImage))   return false;
+=>13657: $   if (_TX_HDC_FAILED (sourceImage)) return false;
+  13658: 
+  13659:     // Это автоматическое определение размеров картинки (точнее, HDC источника - source) с помощью txGetExtent().
+
+# 1 in void Present::Draw(int) at D:\C_course\KPK_TaskThree\LFioninaTaskThree1.cpp (85):
+
+     83: void Present::Draw (int num)
+     84:     {
+=>   85:     txTransparentBlt (txDC(), x, y, X_PRESENT, Y_PRESENT, SPRITE_PRESENT, num*X_PRESENT, 0*Y_PRESENT, RGB(0,255,0));
+     86:     }
+     87: 
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2021-06-16 02:02:25 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	D:\C_course\TX\TXLib.h
+Compiled:	Jul  5 2021 21:22:25, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, DEBUG
+Started:	Jul 05 2021 21:22:29
+
+Run file:	D:\C_course\KPK_TaskThree\LFioninaTaskThree1.exe
+Directory:	D:\C_course\KPK_TaskThree
+
+--------------------------------------------------

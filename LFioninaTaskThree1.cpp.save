@@ -38,6 +38,7 @@ const COLORREF COLOR_TUNNEL  = RGB (0,     0,   0),
                COLOR_TASK    = RGB (255,   0, 255);
 
 //----------------------------------------------------------------------
+
 struct Sprite
     {
     HDC img;
@@ -48,7 +49,15 @@ struct Sprite
     void Delete ();
     };
 
+void Sprite::Load (const char namefile [])
+    {
+    }
 
+void Sprite::Delete ()
+    {
+    }
+
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Resourses
     {
     Sprite person;
@@ -58,19 +67,22 @@ struct Resourses
     void Load ();
     void Delete ();
     };
-
+    
+void Resourses::Load ()
+    {
+    }
+    
+void Resourses::Delete ()
+    {
+    }
+    
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 struct Task
     {
-
     void Draw(char taskText[], char answer[], int num);
-
     };
 
-//-------------------   Ф У Н К Ц И И    К Л А С С О В    ---------------------
-
-
-
-//- - - - - - - - - - - - рисование задания  - - - - - - - - - - - - - - - - - -
+//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void Task::Draw (char taskText[], char answer[], int num)
     {
     txSetColor (RGB(23, 112, 17), 3);
@@ -90,7 +102,8 @@ void Task::Draw (char taskText[], char answer[], int num)
     }
 
 
-//--------------------  ПРОТОТИПЫ ФУНКЦИЙ  ---------------------------------------
+//-----------------------------------------------------------
+
 void GameOver  (Person  hero);
 void LiveDraw  (Person* hero);
 void MoneyDraw (Person* hero);
@@ -99,14 +112,13 @@ void PresentCheck (Person* hero, int v);
 void VisitSchool(Task task, Person* hero, int* visitSchool);
 
 
-//======================== ОСНОВНАЯ ФУНКЦИЯ  ====================================
+//============================================================
 int main ()
     {
     txCreateWindow (1300, 800);
 
-    // ___________ у персонажа 2 характеристики: здоровье и монеты: на старте 100% здоровья и 100 монет
-    //Person hero = {1050, 215, 1, 100, 100};
-    Person hero = {700, 280, 1, 100, 100};
+    Person hero = {1050, 215, 1, 100, 100}; // start position
+    //Person hero = {700, 280, 1, 100, 100};  // school position
     Person heroOld = hero;
 
     HDC background = txLoadImage ("GameSDK\\Images\\bgfon2.bmp");
@@ -115,7 +127,7 @@ int main ()
     txSetColor (RGB(170, 222, 135), 1);
     txRectangle(779, 44, 981, 81);
 
-    int view  = 0;
+    int frame  = 0;
     int widthHero  = X_PERSON / 2;
     int heightHero = Y_PERSON / 2;
 
@@ -132,14 +144,21 @@ int main ()
 
 
     // _________ флаги - получен подарок, v - тип подарка по цвету на картинке
-    int gotPresent1 = 0, gotPresent2 = 0, gotPresent3 = 0, gotPresent4 = 0, visitSchool = 0;
-    int v1 = rand()%5, v2 = rand()%5, v3 = rand()%5, v4 = rand()%5;
+    int gotPresent1 = 0, 
+        gotPresent2 = 0, 
+        gotPresent3 = 0, 
+        gotPresent4 = 0, 
+        visitSchool = 0;
+        
+    int v1 = rand()%5, 
+        v2 = rand()%5, 
+        v3 = rand()%5, 
+        v4 = rand()%5;
 
     // ________ пока не конец игры (не нажата кнопка ESC) _______
     while (! txGetAsyncKeyState (VK_ESCAPE) and hero.live > 0 and hero.money > 0)
         {
         txBegin();
-        //____ рисуем фон
         txBitBlt (0, 0, background);
 
         //_____рисуем на фоне подарки
@@ -149,8 +168,8 @@ int main ()
         pres4.Draw (v4);
 
         //_____рисуем героя с спрайтовой анимацией
-        view ++;
-        hero.Draw(view);
+        frame ++;
+        hero.Draw(frame);
 
         heroOld = hero;
         hero.Control();
@@ -158,7 +177,6 @@ int main ()
         LiveDraw  (&hero);
         MoneyDraw (&hero);
 
-        //____ персонаж бродит по полю - границы отнимают здоровье
         if (txGetAsyncKeyState (VK_F1)) txBitBlt (0, 0, mapBG);
 
         //  границы L - левая, R -  правая, T - верхняя, B - нижняя
